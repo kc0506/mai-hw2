@@ -1,0 +1,19 @@
+# Robust training configuration with automatic device management
+
+defaults:
+  - config
+  - _self_
+
+# Auto device selection
+auto_device: true               # Automatically find best available GPU
+wait_for_gpu: true              # Wait if no GPU available
+min_gpu_memory_mb: 4000         # Minimum GPU memory required (MB)
+gpu_wait_timeout_minutes: 60    # Max time to wait for GPU
+gpu_check_interval_seconds: 30  # How often to check for available GPU
+
+# OOM handling
+min_batch_size: 4               # Minimum batch size before giving up
+max_retries: 3                  # Max retries on OOM error
+
+# Override device (will be replaced by auto-selected device)
+device: "cuda"

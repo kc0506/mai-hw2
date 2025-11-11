@@ -1,0 +1,148 @@
+● 對於 Task2 的分析，我建議以下幾類圖表：
+
+  1. 訓練過程曲線（必須）
+
+  # Training/Validation Loss & Accuracy
+  fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+  # Loss curve
+  axes[0].plot(train_losses, label='Train Loss')
+  axes[0].plot(val_losses, label='Val Loss')
+  axes[0].set_xlabel('Epoch')
+  axes[0].set_ylabel('Loss')
+  axes[0].legend()
+  axes[0].set_title('Training/Validation Loss')
+
+  # Accuracy curve
+  axes[1].plot(val_accuracies, label='Val Accuracy')
+  axes[1].set_xlabel('Epoch')
+  axes[1].set_ylabel('Accuracy')
+  axes[1].legend()
+  axes[1].set_title('Validation Accuracy')
+
+  plt.tight_layout()
+  plt.show()
+
+  2. Confusion Matrix（了解分類錯誤模式）
+
+  from sklearn.metrics import confusion_matrix
+  import seaborn as sns
+
+  # Get predictions
+  cm = confusion_matrix(y_true, y_pred)
+
+  plt.figure(figsize=(10, 8))
+  sns.heatmap(cm, annot=False, fmt='d', cmap='Blues')
+  plt.xlabel('Predicted')
+  plt.ylabel('True')
+  plt.title('Confusion Matrix')
+  plt.show()
+
+  3. 方法比較圖（Linear Probing vs LoRA）
+
+  methods = ['Linear Probe', 'LoRA']
+  flowers_acc = [linear_probe_flowers_acc, lora_flowers_acc]
+  birds_acc = [linear_probe_birds_acc, lora_birds_acc]
+
+  x = np.arange(len(methods))
+  width = 0.35
+
+  fig, ax = plt.subplots(figsize=(8, 6))
+  ax.bar(x - width/2, flowers_acc, width, label='Flowers102')
+  ax.bar(x + width/2, birds_acc, width, label='CUB-200')
+
+  ax.set_ylabel('Accuracy (%)')
+  ax.set_title('Comparison: Linear Probe vs LoRA')
+  ax.set_xticks(x)
+  ax.set_xticklabels(methods)
+  ax.legend()
+  plt.show()
+
+  4. Per-Class Accuracy（找出困難類別）
+
+  from sklearn.metrics import classification_report
+
+  # Get per-class metrics
+  report = classification_report(y_true, y_pred, output_dict=True,
+                                 target_names=class_names)
+
+  # Plot top-K worst performing classes
+  class_accs = {k: v['precision'] for k, v in report.items()
+                if k not in ['accuracy', 'macro avg', 'weighted avg']}
+  sorted_classes = sorted(class_accs.items(), key=lambda x: x[1])
+
+  top_k = 10
+  worst_classes = sorted_classes[:top_k]
+
+  plt.figure(figsize=(10, 6))
+  plt.barh([c[0] for c in worst_classes], [c[1] for c in worst_classes])
+  plt.xlabel('Accuracy')
+  plt.title(f'Top {top_k} Worst Performing Classes')
+  plt.tight_layout()
+  plt.show()
+
+  5. Sample Predictions 視覺化（直觀理解）
+
+  # Show correct and incorrect predictions
+  fig, axes = plt.subplots(2, 5, figsize=(15, 6))
+
+  # Top row: correct predictions
+  # Bottom row: incorrect predictions
+
+  for i in range(5):
+      # Correct
+      axes[0, i].imshow(correct_images[i])
+      axes[0, i].set_title(f'True: {true_labels[i]}\nPred: {pred_labels[i]}')
+      axes[0, i].axis('off')
+
+      # Incorrect
+      axes[1, i].imshow(incorrect_images[i])
+      axes[1, i].set_title(f'True: {true_labels_wrong[i]}\nPred: {pred_labels_wrong[i]}',
+                           color='red')
+      axes[1, i].axis('off')
+
+  plt.suptitle('Correct (top) vs Incorrect (bottom) Predictions')
+  plt.tight_layout()
+  plt.show()
+
+  6. Training Time Comparison（效率分析）
+
+  methods = ['Linear Probe', 'LoRA']
+  times = [linear_probe_time, lora_time]
+  params = [linear_probe_trainable_params, lora_trainable_params]
+
+  fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+  # Training time
+  axes[0].bar(methods, times)
+  axes[0].set_ylabel('Time (seconds)')
+  axes[0].set_title('Training Time')
+
+  # Trainable parameters
+  axes[1].bar(methods, params)
+  axes[1].set_ylabel('# Parameters')
+  axes[1].set_title('Trainable Parameters')
+  axes[1].set_yscale('log')
+
+  plt.tight_layout()
+  plt.show()
+
+  7. Learning Rate Schedule（如果有用到）
+
+  plt.plot(lr_history)
+  plt.xlabel('Step')
+  plt.ylabel('Learning Rate')
+  plt.title('Learning Rate Schedule')
+  plt.yscale('log')
+  plt.show()
+
+  建議優先順序
+
+  1. 訓練曲線（Loss/Accuracy）← 必須
+  2. 方法比較圖（Linear vs LoRA）← 必須
+  3. Confusion Matrix ← 很有幫助
+  4. Sample Predictions ← 直觀且有說服力
+  5. Per-Class Accuracy ← 深入分析用
+  6. Training Time/Params ← 展示效率差異
+
+  這些圖表可以全面展示模型性能、訓練過程、方法比較和錯誤分析。

@@ -1,0 +1,10 @@
+# Analysis configuration for comparing multiple models
+
+# Example: compare linear probe vs LoRA on flowers102
+compare:
+  - output_dir: outputs/linear_probe/flowers102
+    name: "Linear Probe"
+  - output_dir: outputs/lora/flowers102
+    name: "LoRA"
+
+comparison_output_dir: outputs/comparison/flowers102

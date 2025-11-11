@@ -1,0 +1,10 @@
+t-SNE
+
+
+top-1 acc, top-5 acc, macro-F1, weighted-F1, ECE (calibration)
+
+checkpoint size
+
+accuracy vs. layer index
+
+Compare CLS vs. mean pooled patch tokens

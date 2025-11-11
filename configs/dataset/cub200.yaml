@@ -1,0 +1,6 @@
+# CUB-200-2011 dataset configuration
+
+name: cub200
+val_split: 0.1
+seed: 42
+num_classes: 200

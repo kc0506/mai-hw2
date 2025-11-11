@@ -1,0 +1,7 @@
+# Linear Probe model configuration
+
+name: linear_probe
+type: linear_probe
+
+# Training hyperparameters
+learning_rate: 1e-3

@@ -1,0 +1,29 @@
+# Main configuration file for CLIP fine-tuning
+
+defaults:
+  - dataset: flowers102
+  - model: linear_probe
+  - _self_
+
+# Model settings
+clip_model_id: "openai/clip-vit-large-patch14"
+
+# Training settings
+training:
+  num_epochs: 1
+  batch_size: 128
+  gradient_accumulation_steps: 4
+  num_workers: 4
+
+# Device settings
+device: "cuda:3"
+
+# Output settings
+output_dir: "outputs/${model.name}/${dataset.name}"
+seed: 42
+
+# Logging
+use_wandb: false
+wandb:
+  project: "clip-finetuning"
+  entity: null  # Set your wandb entity here

@@ -1,0 +1,6 @@
+# Flowers102 dataset configuration
+
+name: flowers102
+root_dir: "../data"
+download: true
+num_classes: 102

@@ -1,0 +1,12 @@
+# LoRA fine-tuning model configuration
+
+name: lora
+type: lora
+
+# Training hyperparameters
+learning_rate: 1e-4
+
+# LoRA hyperparameters
+lora_r: 8
+lora_alpha: 16
+lora_dropout: 0.1
